@@ -1,0 +1,25 @@
+vcpkg_from_github(
+  OUT_SOURCE_PATH SOURCE_PATH
+  REPO y-256/libdivsufsort
+  REF 2.0.1
+  SHA512 c82299adbd49995145872cd67e03b1c8762de99043acca48964b16c66a39347fb6211b17c9b5f6e12878983ea7cafa65991179f67e3a4cb5e5e14bb57775487e
+  HEAD_REF main
+)
+
+vcpkg_cmake_configure(
+  SOURCE_PATH "${SOURCE_PATH}"
+  WINDOWS_USE_MSBUILD
+  OPTIONS
+    -DCMAKE_BUILD_TYPE=Release
+    -DBUILD_SHARED_LIBS=OFF
+)
+
+vcpkg_cmake_install()
+
+file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
+file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/release/include")
+
+file(
+  INSTALL "${SOURCE_PATH}/COPYING"
+  DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}"
+  RENAME copyright)
